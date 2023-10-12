@@ -1,1 +1,0 @@
-# TODO: Scrape URL data from https://phishtank.com/
