@@ -4,6 +4,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder 
 from sklearn import metrics
 from sklearn.ensemble import RandomForestClassifier
+from lightgbm import LGBMClassifier
 from sklearn.feature_extraction.text import TfidfVectorizer
 from pickle import dump, load
 
@@ -29,4 +30,13 @@ rf.fit(X_train,y_train)
 y_pred_rf = rf.predict(X_test)
 
 score = metrics.accuracy_score(y_test, y_pred_rf)
+print("accuracy:   %0.3f" % score)
+
+# Light GBM Classifier
+lgb = LGBMClassifier(objective='multiclass',boosting_type= 'gbdt',n_jobs = 5, 
+          silent = True, random_state=5)
+LGB_C = lgb.fit(X_train, y_train)
+y_pred_lgb = LGB_C.predict(X_test)
+
+score = metrics.accuracy_score(y_test, y_pred_lgb)
 print("accuracy:   %0.3f" % score)
