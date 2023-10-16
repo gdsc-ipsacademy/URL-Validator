@@ -22,3 +22,11 @@ dump(vectorizer, open('vectorizer.pkl', "wb"))
 y = df['type_code']
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, test_size=0.2,shuffle=True, random_state=8)
+
+# Random Forest Classifier
+rf = RandomForestClassifier(n_estimators=100,max_features='sqrt')
+rf.fit(X_train,y_train)
+y_pred_rf = rf.predict(X_test)
+
+score = metrics.accuracy_score(y_test, y_pred_rf)
+print("accuracy:   %0.3f" % score)
