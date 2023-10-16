@@ -5,6 +5,7 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn import metrics
 from sklearn.ensemble import RandomForestClassifier
 from lightgbm import LGBMClassifier
+import xgboost as xgb
 from sklearn.feature_extraction.text import TfidfVectorizer
 from pickle import dump, load
 
@@ -39,4 +40,12 @@ LGB_C = lgb.fit(X_train, y_train)
 y_pred_lgb = LGB_C.predict(X_test)
 
 score = metrics.accuracy_score(y_test, y_pred_lgb)
+print("accuracy:   %0.3f" % score)
+
+# XGboost Classifier
+xgb_c = xgb.XGBClassifier(n_estimators= 100)
+xgb_c.fit(X_train,y_train)
+y_pred_x = xgb_c.predict(X_test)
+
+score = metrics.accuracy_score(y_test, y_pred_x)
 print("accuracy:   %0.3f" % score)
