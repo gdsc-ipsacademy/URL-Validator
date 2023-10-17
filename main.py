@@ -33,7 +33,7 @@ y_pred_rf = rf.predict(X_test)
 score = metrics.accuracy_score(y_test, y_pred_rf)
 print("accuracy:   %0.3f" % score)
 
-dump(model, open("rf.pkl", "wb"))
+dump(rf, open("rf.pkl", "wb"))
 
 # Light GBM Classifier
 lgb = LGBMClassifier(objective='multiclass',boosting_type= 'gbdt',n_jobs = 5, 
@@ -44,7 +44,7 @@ y_pred_lgb = LGB_C.predict(X_test)
 score = metrics.accuracy_score(y_test, y_pred_lgb)
 print("accuracy:   %0.3f" % score)
 
-dump(model, open("lgb.pkl", "wb"))
+dump(lgb, open("lgb.pkl", "wb"))
 
 # XGboost Classifier
 xgb_c = xgb.XGBClassifier(n_estimators= 100)
@@ -54,4 +54,4 @@ y_pred_x = xgb_c.predict(X_test)
 score = metrics.accuracy_score(y_test, y_pred_x)
 print("accuracy:   %0.3f" % score)
 
-dump(model, open("xgb_c.pkl", "wb"))
+dump(xgb_c, open("xgb_c.pkl", "wb"))
