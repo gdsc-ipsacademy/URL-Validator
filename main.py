@@ -25,33 +25,30 @@ y = df['type_code']
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, test_size=0.2,shuffle=True, random_state=8)
 
-# Random Forest Classifier
-rf = RandomForestClassifier(n_estimators=100,max_features='sqrt')
-rf.fit(X_train,y_train)
-y_pred_rf = rf.predict(X_test)
+model = SGDClassifier(loss='hinge', penalty='l2',
+                      fit_intercept=True, shuffle=True)
 
-score = metrics.accuracy_score(y_test, y_pred_rf)
-print("accuracy:   %0.3f" % score)
+# Fitting the data in the model
 
-dump(rf, open("rf.pkl", "wb"))
+# Using fit will overwrite the previous weights on each epoch
+# Partial fit enables fitting new data to the previously trained model
 
-# Light GBM Classifier
-lgb = LGBMClassifier(objective='multiclass',boosting_type= 'gbdt',n_jobs = 5, 
-          silent = True, random_state=5)
-LGB_C = lgb.fit(X_train, y_train)
-y_pred_lgb = LGB_C.predict(X_test)
+model.partial_fit(X_train, Y_train, classes=np.unique(Y))
 
-score = metrics.accuracy_score(y_test, y_pred_lgb)
-print("accuracy:   %0.3f" % score)
+# Training the model with training data and printing it's accuracy on training data
 
-dump(lgb, open("lgb.pkl", "wb"))
+X_train_prediction = model.predict(X_train)
+training_data_accuracy = accuracy_score(X_train_prediction, Y_train)
 
-# XGboost Classifier
-xgb_c = xgb.XGBClassifier(n_estimators= 100)
-xgb_c.fit(X_train,y_train)
-y_pred_x = xgb_c.predict(X_test)
+print('Accuracy score of the training data : ', training_data_accuracy)
 
-score = metrics.accuracy_score(y_test, y_pred_x)
-print("accuracy:   %0.3f" % score)
+# Testing the model with testing data and printing it's accuracy on test data
 
-dump(xgb_c, open("xgb_c.pkl", "wb"))
+X_test_prediction = model.predict(X_test)
+test_data_accuracy = accuracy_score(X_test_prediction, Y_test)
+
+print('Accuracy score of the test data : ', test_data_accuracy)
+
+# Saving the model (Pickling) so that it can be used to predict data or trained with new data
+
+dump(model, open("model.pkl", "wb"))
